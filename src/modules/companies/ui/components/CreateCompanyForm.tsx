@@ -9,7 +9,7 @@ import {
     AlertCircle,
     Check,
     Loader2,
-    Mail,
+    Mail, Calendar,
 } from "lucide-react";
 
 type OwnProps = {
@@ -133,6 +133,42 @@ const CreateCompanyForm: React.FC<OwnProps> = ({companiesBehavior}) => {
                         {errors.email && (
                             <p className="text-sm text-red-600 mt-1">
                                 {errors.email.message}
+                            </p>
+                        )}
+                    </div>
+
+                    {/* Date */}
+                    <div>
+                        <label
+                            htmlFor="email"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                        >
+                            Creation Date *
+                        </label>
+                        <div className="relative">
+                            <Calendar
+                                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                                size={20}
+                            />
+                            <input
+                                id="email"
+                                name="email"
+                                type="date"
+                                value={watch("creationDate")}
+                                onChange={(e) =>
+                                    handleChange({ key: "creationDate", value: e.target.value })
+                                }
+                                className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all ${
+                                    errors.creationDate
+                                        ? "border-red-500 focus:ring-red-500"
+                                        : "border-gray-300"
+                                }`}
+                                placeholder="company@example.com"
+                            />
+                        </div>
+                        {errors.creationDate && (
+                            <p className="text-sm text-red-600 mt-1">
+                                {errors.creationDate.message}
                             </p>
                         )}
                     </div>

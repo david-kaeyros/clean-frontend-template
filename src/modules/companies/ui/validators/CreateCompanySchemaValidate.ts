@@ -5,7 +5,7 @@ export const createCompanySchemaValidate = z.object({
     email: z.email({ message: "Invalid email address" }),
     phone: z.string().min(6, { message: "Phone number too short" }),
     address: z.string().min(3, { message: "Address too short" }),
-    creationDate: z.string(),
+    creationDate: z.string().min(1, { message: "Creation date should be a date" }),
 });
 
 export type CreateCompanySchemaType = z.infer<typeof createCompanySchemaValidate>;

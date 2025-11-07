@@ -1,6 +1,5 @@
 import {HttpClient} from "@/src/shared/infrastructure/http/HttpClient";
 import {ICompanyRepository} from "@/src/modules/companies/domain/repositories/ICompanyRepository";
-import {CompanyFactory} from "@/src/modules/companies/infra/factory/CompanyFactory";
 import {
     CreateCompanyCommand,
     CreateCompanyResponse

@@ -7,7 +7,8 @@ import CreateCompanyForm from "@/src/modules/companies/ui/components/CreateCompa
 const ListCompaniesView = () => {
     const companiesBehavior = useCompanies();
     const {
-        getCompaniesBehavior
+        getCompaniesBehavior,
+        handleOpenForEdit
     } = companiesBehavior;
     const {data: companies, isLoading, isError, error} = getCompaniesBehavior;
 
@@ -55,7 +56,11 @@ const ListCompaniesView = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {companies.map((company) => (
-                        <CompanyCard key={company.id} company={company}/>
+                        <CompanyCard
+                            key={company.id}
+                            company={company}
+                            handleOpenEdit={handleOpenForEdit}
+                        />
                     ))}
                 </div>
             </div>

@@ -7,6 +7,9 @@ import {
 } from "@/src/modules/companies/ui/validators/CreateCompanySchemaValidate";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useState} from "react";
+import {useUpdateCompany} from "@/src/modules/companies/ui/hooks/useUpdateCompany";
+import {Company} from "@/src/modules/companies/domain/entities/Company";
+import {UpdateCompanyCommand} from "@/src/modules/companies/application/useCases/UpdateCompanyUseCase";
 
 export type CompaniesBehavior = ReturnType<typeof useCompanies>;
 
@@ -25,40 +28,75 @@ export const useCompanies = () => {
 
     const getCompaniesBehavior = useGetCompanies();
     const createCompaniesBehavior = useCreateCompany()
+    const updateCompanyBehavior = useUpdateCompany()
 
-    const { mutate: createCompany, isPending, error, isSuccess, reset } = createCompaniesBehavior;
+    const {mutate: createCompany, isPending, error, isSuccess, reset} = createCompaniesBehavior;
+
+    const {
+        mutate: updateCompany,
+        isPending: isUpdatePending,
+        error: updateError,
+        isSuccess: isUpdateSuccess,
+        reset: updateReset
+    } = updateCompanyBehavior;
 
     const [isOpen, setIsOpen] = useState(false);
+    const [companyToUpdateId, setCompanyToUpdateId] = useState<string | null>(null);
 
-    function handleChange<K extends keyof CreateCompanySchemaType>({key, value}:{
+    function handleChange<K extends keyof CreateCompanySchemaType>({key, value}: {
         key: K,
         value: PathValue<CreateCompanySchemaType, K>;
-                          }){
+    }) {
         form.setValue(key, value);
     }
 
-    const onSubmit = (data: CreateCompanySchemaType) => {
-        createCompany({
-            ...data,
+    function onSubmit(data: CreateCompanySchemaType) {
+        if (!companyToUpdateId) {
+            createCompany({
+                ...data,
+            }, {
+                onSuccess: (res) => {
+                    console.log(res.message)
+                    setTimeout(() => {
+                        handleClose()
+                    }, 1500);
+                }
+            });
+        } else {
+            handleUpdateCompany({
+                id: companyToUpdateId,
+                ...data,
+            })
+        }
+
+    }
+
+    function handleUpdateCompany(command: UpdateCompanyCommand) {
+        if (!companyToUpdateId) {
+            throw new Error("No company to update");
+        }
+        updateCompany({
+            ...command,
         }, {
-            onSuccess: () => {
-               resetForm()
+            onSuccess: (res) => {
+                console.log(res.message)
                 setTimeout(() => {
-                    setIsOpen(false);
-                    reset();
+                    handleClose()
                 }, 1500);
             }
-        });
-    };
+        })
+    }
 
-    function handleOpen(){
+    function handleOpen() {
         setIsOpen(true);
     }
 
     function handleClose() {
         setIsOpen(false);
         reset()
+        updateReset();
         resetForm();
+        setCompanyToUpdateId(null);
     }
 
     function resetForm() {
@@ -71,17 +109,33 @@ export const useCompanies = () => {
         })
     }
 
+    function handleOpenForEdit(data: Company) {
+        setIsOpen(true);
+        setCompanyToUpdateId(data.id);
+        form.reset({
+            address: data.address,
+            companyName: data.companyName,
+            email: data.email,
+            creationDate: data.creationDate.split("T")[0],
+            phone: data.phone,
+        })
+    }
+
     return {
         handleOpen,
-        isPending,
-        isSuccess,
-        error,
+        isPending: isPending || isUpdatePending,
+        isSuccess: isSuccess || isUpdateSuccess,
+        error: error || updateError,
         handleChange,
         isOpen,
         handleClose,
         form,
         getCompaniesBehavior,
         createCompaniesBehavior,
-        onSubmit
+        updateCompanyBehavior,
+        onSubmit,
+        handleUpdateCompany,
+        isEdit: !!companyToUpdateId,
+        handleOpenForEdit
     }
 }

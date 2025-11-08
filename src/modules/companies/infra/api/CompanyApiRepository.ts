@@ -6,6 +6,7 @@ import {
 } from "@/src/modules/companies/application/useCases/CreateCompanyUseCase";
 import {Company} from "@/src/modules/companies/domain/entities/Company";
 import {generateUUID} from "@/src/shared/utils/GenerateUUID";
+import {UpdateCompanyCommand, UpdateCompanyResponse} from "../../application/useCases/UpdateCompanyUseCase";
 
 export class CompanyApiRepository extends HttpClient implements ICompanyRepository {
     private companies: Company[] = [
@@ -13,7 +14,7 @@ export class CompanyApiRepository extends HttpClient implements ICompanyReposito
             id: "1",
             companyName: "SABC",
             email: "sabc@ccontact.com",
-            phone: "1990-03-12",
+            phone: "19900312",
             address: "bali, douala, cameroun",
             creationDate: "2025-11-07T00:00:00Z",
         }
@@ -21,6 +22,31 @@ export class CompanyApiRepository extends HttpClient implements ICompanyReposito
 
     constructor() {
         super(process.env.NEXT_PUBLIC_API_URL || "https://jsonplaceholder.typicode.com");
+    }
+
+    // async update(command: UpdateCompanyCommand): Promise<UpdateCompanyResponse> {
+    //     const data = await this.put<UpdateCompanyApiResponse>(companiesApiRoutes.update, command);
+    //     return CompanyFactory.formatUpdateCompanyFromApiResponse(data, command);
+    // }
+
+    async update(command: UpdateCompanyCommand): Promise<UpdateCompanyResponse> {
+        const index = this.companies.findIndex(c => c.id === command.id);
+        if (index === -1) {
+            throw new Error("Company not found");
+        }
+
+        const updatedCompany: Company = {
+            ...this.companies[index],
+            ...command,
+        };
+
+        this.companies[index] = updatedCompany;
+
+        return {
+            company: updatedCompany,
+            isUpdated: true,
+            message: "Company updated successfully"
+        }
     }
 
     // Implementation with real API

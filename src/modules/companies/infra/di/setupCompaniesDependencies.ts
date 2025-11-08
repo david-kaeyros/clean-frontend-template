@@ -2,6 +2,7 @@ import {CompanyApiRepository} from "@/src/modules/companies/infra/api/CompanyApi
 import {companyDependencies} from "@/src/modules/companies/infra/di/container";
 import {GetCompaniesUseCase} from "@/src/modules/companies/application/useCases/GetCompaniesUseCase";
 import {CreateCompanyUseCase} from "@/src/modules/companies/application/useCases/CreateCompanyUseCase";
+import {UpdateCompanyUseCase} from "@/src/modules/companies/application/useCases/UpdateCompanyUseCase";
 
 export function setupCompaniesDependencies() {
     // 1. Register infrastructure (repositories)
@@ -16,5 +17,9 @@ export function setupCompaniesDependencies() {
     companyDependencies.register(
         "CreateCompanyUseCase",
         () => new CreateCompanyUseCase(companyRepository)
+    );
+    companyDependencies.register(
+        "UpdateCompanyUseCase",
+        () => new UpdateCompanyUseCase(companyRepository)
     );
 }

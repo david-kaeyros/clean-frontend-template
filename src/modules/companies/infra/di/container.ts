@@ -1,11 +1,13 @@
 import {GetCompaniesUseCase} from "@/src/modules/companies/application/useCases/GetCompaniesUseCase";
 import {CreateCompanyUseCase} from "@/src/modules/companies/application/useCases/CreateCompanyUseCase";
 import {ICompanyRepository} from "@/src/modules/companies/domain/repositories/ICompanyRepository";
+import {UpdateCompanyUseCase} from "@/src/modules/companies/application/useCases/UpdateCompanyUseCase";
 
 export interface CompanyServiceRegistry {
     CompanyApiRepository: ICompanyRepository;
     GetCompaniesUseCase: GetCompaniesUseCase;
     CreateCompanyUseCase: CreateCompanyUseCase;
+    UpdateCompanyUseCase: UpdateCompanyUseCase;
 }
 
 export type CompanyServiceKey = keyof CompanyServiceRegistry;

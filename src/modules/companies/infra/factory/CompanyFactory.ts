@@ -2,6 +2,11 @@ import {GetCompaniesApiResponse} from "@/src/modules/companies/infra/api-respons
 import {Company} from "@/src/modules/companies/domain/entities/Company";
 import {CreateCompanyApiResponse} from "@/src/modules/companies/infra/api-responses/CreateCompanyApiResponse";
 import {CreateCompanyCommand, CreateCompanyResponse} from "@/src/modules/companies/application/useCases/CreateCompanyUseCase";
+import {UpdateCompanyApiResponse} from "@/src/modules/companies/infra/api-responses/UpdateCompanyApiResponse";
+import {
+    UpdateCompanyCommand,
+    UpdateCompanyResponse
+} from "@/src/modules/companies/application/useCases/UpdateCompanyUseCase";
 
 export class CompanyFactory {
 
@@ -23,6 +28,16 @@ export class CompanyFactory {
                 ...command,
             },
             isSaved: data.isSaved,
+            message: data.message
+        }
+    }
+
+    static formatUpdateCompanyFromApiResponse(data: UpdateCompanyApiResponse, command: UpdateCompanyCommand): UpdateCompanyResponse {
+        return {
+            company: {
+                ...command,
+            },
+            isUpdated: data.isUpdated,
             message: data.message
         }
     }

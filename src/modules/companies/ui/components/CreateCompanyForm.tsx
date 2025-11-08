@@ -27,6 +27,8 @@ const CreateCompanyForm: React.FC<OwnProps> = ({companiesBehavior}) => {
         error,
         handleOpen,
         onSubmit,
+        handleUpdateCompany,
+        isEdit
     } = companiesBehavior;
 
     const {
@@ -53,7 +55,7 @@ const CreateCompanyForm: React.FC<OwnProps> = ({companiesBehavior}) => {
                 {/* Header */}
                 <div className="flex items-center justify-between p-6 border-b border-gray-200">
                     <h2 className="text-xl font-semibold text-gray-900">
-                        Create New Company
+                        {isEdit ? "Edit Company" : "Create New Company"}
                     </h2>
                     <button
                         onClick={handleClose}
@@ -286,7 +288,7 @@ const CreateCompanyForm: React.FC<OwnProps> = ({companiesBehavior}) => {
                                     Creating...
                                 </>
                             ) : (
-                                "Create Company"
+                                isEdit ? "Edit Company" : "Create Company"
                             )}
                         </button>
                     </div>

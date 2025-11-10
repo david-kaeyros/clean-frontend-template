@@ -1,6 +1,7 @@
 import type {Metadata} from "next";
 import {Geist, Geist_Mono} from "next/font/google";
 import "./globals.css";
+import "@/src/shared/infrastructure/dependencies/AppDependenciesSetup"
 import {ReactQueryProvider} from "@/src/shared/providers/ReactQueryProvider";
 
 const geistSans = Geist({

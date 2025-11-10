@@ -1,5 +1,5 @@
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {companyDependencies} from "@/src/modules/companies/infra/di/container";
+import {companyDependencies} from "@/src/modules/companies/infra/di/CompanyDiContainer";
 import {DeleteCompanyCommand} from "@/src/modules/companies/application/useCases/DeleteCompanyUseCase";
 
 export const useDeleteCompany = () => {

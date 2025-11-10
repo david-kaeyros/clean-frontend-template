@@ -1,4 +1,4 @@
-import {companyDependencies} from "@/src/modules/companies/infra/di/container";
+import {companyDependencies} from "@/src/modules/companies/infra/di/CompanyDiContainer";
 import {useQuery} from "@tanstack/react-query";
 
 export const useGetCompanies = () => {

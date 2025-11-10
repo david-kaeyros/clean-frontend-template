@@ -7,7 +7,7 @@ export class DIContainer<TServiceRegistry> {
     private services = new Map<keyof TServiceRegistry, any>();
     private singletons = new Map<keyof TServiceRegistry, any>();
     private initialized = false;
-    private moduleName: string;
+    private readonly moduleName: string;
 
     constructor(moduleName: string) {
         this.moduleName = moduleName;
